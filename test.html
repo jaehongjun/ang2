@@ -11,37 +11,71 @@
         //     alert("test 함수를 호출하셨네요!");
         // }
         //t1(); 안됨     
-        var testFunc = function(){
+        var testFunc = function(params){
             this.a = 3; //public
-            var b = 4;  //private            
+            // var b = 4;  //private            
+            var num1 = parseInt(params.num1);
+            var num2 = parseInt(params.num2);
+            var opObj = params.opObj;
             this.printSome = function(some){
                 //console.log(some);
                 //alert(some);
                 alert(some);
             }
-            this.add = function(num1,num2){
-                num1 = parseInt(num1);
-                num2 = parseInt(num2);
-                // this.printSome(num1+num2);
+            this.add = function(){                
                 return num1+num2;
             }
+            this.minus = function(){
+                return num1-num2;
+            }
+            this.multiple = function(){
+                return num1*num2;
+            }
+            this.division = function(){
+                return num1/num2;
+            }
+            this.cal = function(){
+                if(opObj=="")       alert("연산자를 선택해");                
+                else if(opObj=="+") return this.add();
+                else if(opObj=="-") return this.minus();
+                else if(opObj=="*") return this.multiple();
+                else if(opObj=="/") return this.division();
+            }
         }        
-        function f1(){
-            var tf = new testFunc();     
+        // function f2(num1){
+        //     alert("first");
+        // }
+        // function f2(){
+        //     alert("second");            
+        // }
+        // f2(3); // f2() 실행 오버라이딩 무조건 재정의
+        function f1(){             
             var numObj1 = document.getElementById("num1");
-            var numObj2 = document.getElementById("num2");
-            var resultObj = document.getElementById("result");
-            resultObj.value = tf.add(numObj1.value,numObj2.value);           
+            var numObj2 = document.getElementById("num2");            
+            var opObj = document.getElementById("op");        
+            var params = {};
+            params["num1"]=numObj1.value;
+            params["num2"]=numObj2.value;
+            params["opObj"]=opObj.value;
+            var tf = new testFunc(params); 
+            var resultObj = document.getElementById("result");    
+            resultObj.value = tf.cal();           
             //tf.printSome("아무거나");        
         }
-
+        
     </script>
     <body>
         <label for="num1">
             숫자1:                
         </label>
         <input type="text" id="num1">
-        +
+        <select name="op" id="op">
+            <option value="">선택</option>
+            <option value="+">더하기</option>
+            <option value="-">빼기</option>
+            <option value="/">나누기</option>
+            <option value="*">곱하기</option>
+        </select>
         <label for="num2">
             숫자2:                
         </label>
